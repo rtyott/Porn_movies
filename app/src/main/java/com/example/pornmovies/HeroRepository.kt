@@ -7,7 +7,9 @@ object HeroRepository {
      var heroListDatabase:HeroListDatabase? = null
      var liveData: LiveData<List<HeroListEntity>>? = null
      fun getData(context: Context): LiveData<List<HeroListEntity>> {
-          heroListDatabase = HeroListDatabase.createDatabase(context)
+          if(heroListDatabase == null){
+               heroListDatabase = HeroListDatabase.createDatabase(context)
+          }
           return heroListDatabase!!.getListDao().getEverything()
      }
      suspend fun addHero(hero:HeroListEntity){
