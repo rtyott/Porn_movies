@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
-@Database(entities = [HeroListEntity::class], version = 4, exportSchema = false)
+@Database(entities = [IsFavoriteEntity::class], version = 7, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class HeroListDatabase: RoomDatabase() {
     abstract fun getListDao(): HeroListDao

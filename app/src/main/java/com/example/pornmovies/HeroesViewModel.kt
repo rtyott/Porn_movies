@@ -13,9 +13,15 @@ class HeroesViewModel: ViewModel(){
             heroesStat.postValue(Retrofit.getRetrofitInstance().getHeroesStats().body())
         }
     }
-    fun addHero(hero:HeroListEntity){
+
+    fun addFav(isFavoriteEntity: IsFavoriteEntity){
         viewModelScope.launch {
-           HeroRepository.addHero(hero)
+            HeroRepository.addFav(isFavoriteEntity)
+        }
+    }
+    fun update(isFavoriteEntity: IsFavoriteEntity){
+        viewModelScope.launch {
+            HeroRepository.updateFav(isFavoriteEntity)
         }
     }
 }
