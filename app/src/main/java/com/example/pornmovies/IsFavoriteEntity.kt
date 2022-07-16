@@ -7,7 +7,8 @@ import androidx.room.Relation
 
 @Entity(tableName = "is_favorite_table")
 data class IsFavoriteEntity(
-    @PrimaryKey(autoGenerate = true) var favId: Int = 0,
+    @PrimaryKey(autoGenerate = true)
+    var favId: Int = 0,
     var favorite:Boolean,
     @Embedded
     var hero:HeroListEntity

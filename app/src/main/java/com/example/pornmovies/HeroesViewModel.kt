@@ -7,12 +7,13 @@ import kotlinx.coroutines.launch
 class HeroesViewModel: ViewModel(){
     var heroesStat: MutableLiveData<List<HeroListEntity>> = MutableLiveData()
     
-    fun getHeroesLocal(context: Context) = HeroRepository.getData(context)
+    fun getHeroesName(context: Context) = HeroRepository.getDataName(context)
     fun getHeroesRemote(){
         viewModelScope.launch {
             heroesStat.postValue(Retrofit.getRetrofitInstance().getHeroesStats().body())
         }
     }
+    fun getHeroesLegs(context: Context) = HeroRepository.getDataLegs(context)
 
     fun addFav(isFavoriteEntity: IsFavoriteEntity){
         viewModelScope.launch {
@@ -23,5 +24,11 @@ class HeroesViewModel: ViewModel(){
         viewModelScope.launch {
             HeroRepository.updateFav(isFavoriteEntity)
         }
+    }
+    fun getSorting(context: Context): String {
+        return SettingsRepository.getSort(context)
+    }
+    fun putSorting(string: String){
+        SettingsRepository.putSort(string)
     }
 }

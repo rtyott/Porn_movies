@@ -24,10 +24,12 @@ class HeroesRCAdapter(var heroList:List<IsFavoriteEntity>): RecyclerView.Adapter
         if(heroList[position].favorite){
             holder.binding.favButton.setImageResource(R.drawable.ic_fav)
         }
+        else{
+            holder.binding.favButton.setImageResource(R.drawable.ic_not_fav)
+        }
         holder.binding.favButton.setOnClickListener {
             myListener.OnClick(heroList[position])
         }
-
     }
 
     override fun getItemCount(): Int {
