@@ -12,6 +12,6 @@ interface HeroListDao {
     fun getEverythingLegs(): LiveData<List<IsFavoriteEntity>>
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insersFav(isFavoriteEntity: IsFavoriteEntity)
-    @Update
+    @Update()
     suspend fun update(isFavoriteEntity: IsFavoriteEntity)
 }

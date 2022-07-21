@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="hero_back">#191919</color>
     <color name="sort_back">#515151</color>
+    <color name="trans">#00FFFFFF </color>
 </resources>

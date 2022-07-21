@@ -11,7 +11,7 @@ object SettingsRepository {
         return sharedPreferences.getString("sort","name").toString()
     }
     fun putSort(smth:String){
-        sharedPreferences.edit().clear().apply()
-        sharedPreferences.edit().putString("sort",smth).apply()
+        sharedPreferences.edit().clear().commit()
+        sharedPreferences.edit().putString("sort",smth).commit()
     }
 }

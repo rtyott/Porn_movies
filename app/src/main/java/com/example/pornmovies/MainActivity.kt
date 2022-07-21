@@ -1,10 +1,12 @@
 package com.example.pornmovies
 
 import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import android.widget.RadioButton
@@ -28,30 +30,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         viewModel = ViewModelProvider(this).get(HeroesViewModel::class.java)
-        binding.btn.setOnClickListener {
-            getFirstData()
+        var closeButtonId2 = resources.getIdentifier("android:id/search_close_btn",null,null)
+        var clos= binding.searchView.findViewById<ImageView>(closeButtonId2)
+        clos.setImageResource(R.drawable.ic_sort_icon)
+        clos.setOnClickListener {
+            showDialog()
         }
         getFirstData()
     }
 
     private fun getFirstData() {
-        when(viewModel.getSorting(this)){
-            "legs"->{
-                viewModel.getHeroesLegs(this).observe(this, Observer { legs ->
-                    sortReceivedData(legs)
-                })
-            }
-            "name"->{
-            viewModel.getHeroesName(this).observe(this, Observer { name ->
-                sortReceivedData(name)
-            })}
-            }
+        viewModel.getSorting(this)
+        viewModel.sorting.observe(this) {sort->
+            fetchData(sort)
+        }
 
     }
     fun sortReceivedData(it3:List<IsFavoriteEntity>){
-        if(it3.size!=0){
-            var kk = it3
-
+        if(it3.isNotEmpty()){
             adapter1 = HeroesRCAdapter(it3)
             binding.heroRecycler.layoutManager = GridLayoutManager(this,2)
             binding.heroRecycler.adapter = adapter1
@@ -75,38 +71,41 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu,menu)
-        var searchMenuItem = menu?.findItem(R.id.search_view_id)
-        var menuitem = searchMenuItem!!.actionView as SearchView
-        menuitem.queryHint = "kf"
-        menuitem.isIconified = false
-        var closeButtonId = resources.getIdentifier("android:id/search_close_btn",null,null)
-        var closebtn = menuitem.findViewById<ImageView>(closeButtonId)
-        closebtn.setImageResource(R.drawable.ic_sort_icon)
-        closebtn.setOnClickListener {
-            showDialog()
-        }
-        return super.onCreateOptionsMenu(menu)
-    }
+
 
     private fun showDialog() {
-        var bottomSheetDialog = BottomSheetDialog(this)
+        var bottomSheetDialog = BottomSheetDialog(this,R.style.DialogCustomTheme)
         bottomSheetDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        var binding1:SortBottomSheetBinding = SortBottomSheetBinding.inflate(layoutInflater)
+        var binding1: SortBottomSheetBinding = SortBottomSheetBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(binding1.root)
         binding1.btnSortLegs.setOnClickListener {
             viewModel.putSorting("legs")
-            getFirstData()
             bottomSheetDialog.dismiss()
+            fetchData("legs")
         }
         binding1.btnSortName.setOnClickListener {
             viewModel.putSorting("name")
-            getFirstData()
             bottomSheetDialog.dismiss()
-
+            fetchData("name")
         }
-        bottomSheetDialog.window?.setBackgroundDrawableResource(Color.TRANSPARENT)
+        bottomSheetDialog.window!!.attributes.windowAnimations = R.style.DialogAnim
         bottomSheetDialog.show()
+    }
+    fun fetchData(string: String){
+        when(string) {
+            "legs" -> {
+                viewModel.getHeroesLegs(this).observe(this){ legs ->
+                    viewModel.getHeroesName(this).removeObservers(this)
+                    sortReceivedData(legs)
+                }
+
+            }
+            "name" -> {
+                viewModel.getHeroesName(this).observe(this){ name ->
+                    viewModel.getHeroesLegs(this).removeObservers(this)
+                    sortReceivedData(name)
+                }
+            }
+        }
     }
 }
