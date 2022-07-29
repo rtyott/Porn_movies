@@ -6,8 +6,10 @@ import android.content.SharedPreferences
 
 object SettingsRepository {
     lateinit var sharedPreferences: SharedPreferences
-    fun getSort(context: Context):String{
+    fun initPrefs(context: Context){
         sharedPreferences = context.getSharedPreferences("sort",MODE_PRIVATE)
+    }
+    fun getSort():String{
         return sharedPreferences.getString("sort","name").toString()
     }
     fun putSort(smth:String){

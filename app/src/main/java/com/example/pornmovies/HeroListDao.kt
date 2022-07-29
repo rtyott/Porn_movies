@@ -7,9 +7,9 @@ import androidx.room.*
 @Dao
 interface HeroListDao {
     @Query("SELECT * FROM is_favorite_table ORDER BY localized_name")
-    fun getEverythingName(): LiveData<List<IsFavoriteEntity>>
+    fun getEverythingName(): List<IsFavoriteEntity>
     @Query("SELECT * FROM is_favorite_table ORDER BY legs")
-    fun getEverythingLegs(): LiveData<List<IsFavoriteEntity>>
+    fun getEverythingLegs(): List<IsFavoriteEntity>
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insersFav(isFavoriteEntity: IsFavoriteEntity)
     @Update()

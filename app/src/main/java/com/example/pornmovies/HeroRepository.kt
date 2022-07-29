@@ -6,13 +6,13 @@ import androidx.lifecycle.LiveData
 object HeroRepository {
      var heroListDatabase:HeroListDatabase? = null
      var liveData: LiveData<List<HeroListEntity>>? = null
-     fun getDataName(context: Context): LiveData<List<IsFavoriteEntity>> {
+     fun getDataName(context: Context): List<IsFavoriteEntity> {
           if(heroListDatabase == null){
                heroListDatabase = HeroListDatabase.createDatabase(context)
           }
           return heroListDatabase!!.getListDao().getEverythingName()
      }
-     fun getDataLegs(context: Context): LiveData<List<IsFavoriteEntity>> {
+     fun getDataLegs(context: Context): List<IsFavoriteEntity> {
           if(heroListDatabase == null){
                heroListDatabase = HeroListDatabase.createDatabase(context)
           }
